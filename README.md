@@ -18,8 +18,10 @@ copy `webapp/build` to `server/build`
 
 ### Dockerizing
 
+IMPORTANT: just using latest as a tag will result in the new image not being pulled. Just use a version number and update containers manually.
+
 ```cmd
 cd server
-docker build -t 192.168.1.101:5000/iot-hub .
+docker build --no-cache -t 192.168.1.101:5000/iot-hub:[version] .
 docker push 192.168.1.101:5000/iot-hub
 ```

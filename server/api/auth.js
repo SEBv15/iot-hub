@@ -23,7 +23,6 @@ module.exports = function(db) {
     auth.post("/login", async (req, res) => {
         var name = req.body.username.toLowerCase()
         var pass = req.body.password
-        console.log(name, pass)
         if (!pass || !name) {
             res.status(400).send({error: "Username and password required"})
             return
