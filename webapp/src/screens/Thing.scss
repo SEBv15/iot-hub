@@ -1,6 +1,26 @@
 div.thing {
-    h2 span {
-        color: #999;
+    h2 {
+        button.editBTN {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            margin-left: 8px;
+            margin-top: -3px;
+        }
+
+        span {
+            color: #999;
+            margin-left: 8px;
+        }
+        .editName {
+            width: 256px;
+            display: inline-flex;
+            vertical-align: 6px;
+
+            button.btn {
+                padding: .15rem .75rem;
+            }
+        }
     }
     div.container h5 {
         text-align: left;
@@ -74,4 +94,11 @@ div.thing {
             }
         }
     }
+}
+
+div.loading {
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    margin-top: 20vh;
 }

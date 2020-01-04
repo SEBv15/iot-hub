@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
 import { Link, useHistory } from 'react-router-dom'
 import api from './../api'
+import './Login.scss'
+import { FormInput, Container, Row, Col } from 'shards-react';
 
 export default class Login extends Component {
     state = {
         error: ""
+    }
+    sizings = {
+        lg: {size: 4, offset: 4},
+        md: {size: 6, offset: 3},
+        sm: {size: 8, offset: 2},
+        xs: {size: 10, offset: 1}
     }
     componentDidMount() {
         var token = localStorage.getItem("token")
@@ -27,13 +35,27 @@ export default class Login extends Component {
     }
     render() {
         return (
-            <div>
-                <p>LOGIN</p>
+            <div className="login">
+                <h1>Strempfer IoT</h1>
                 <p>{this.state.error}</p>
                 <form onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Username" name="username" onChange={(e)=>this.setState({username: e.target.value})} />
-                    <input type="password" placeholder="Password" name="password" onChange={(e)=>this.setState({password: e.target.value})} />
-                    <input type="submit" value="Login" onClick={this.handleSubmit} />
+                    <Container>
+                        <Row>
+                            <Col {...this.sizings}>
+                                <FormInput type="text" name="username" placeholder="Username" onChange={(e)=>this.setState({username: e.target.value})} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col {...this.sizings}>
+                                <FormInput type="password" name="password" placeholder="Password" onChange={(e)=>this.setState({password: e.target.value})} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col {...this.sizings}>
+                                <FormInput type="submit" theme="default" className="btn btn-outline-primary" name="submit" value="Login" onClick={this.handleSubmit} />
+                            </Col>
+                        </Row>
+                    </Container>
                 </form>
             </div>
         )

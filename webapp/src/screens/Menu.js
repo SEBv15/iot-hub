@@ -5,7 +5,9 @@ import './Menu.scss'
 
 import api from './../api'
 
-import { Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, NavLink } from "shards-react";
+import { Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, NavLink, Button } from "shards-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 class Menu extends Component {
     state = {
@@ -28,6 +30,10 @@ class Menu extends Component {
     }
     toggleNavbar = () => {
         this.setState({toggleOpen: !this.state.toggleOpen})
+    }
+    logout = () => {
+        localStorage.removeItem("token")
+        this.props.history.push("/")
     }
     render() {
         return (
@@ -62,6 +68,10 @@ class Menu extends Component {
                                     Users
                                 </NavLink>
                             </NavItem>):null}
+                        </Nav>
+
+                        <Nav navbar className="ml-auto">
+                            <Button onClick={this.logout} outline pill>Logout <FontAwesomeIcon icon={faSignOutAlt} /></Button>
                         </Nav>
                     </Collapse>
                 </Navbar>

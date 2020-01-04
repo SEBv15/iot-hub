@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import { Link, useHistory } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader, Container, Row, Col, Slider, FormInput, Button, InputGroup, InputGroupAddon } from "shards-react";
 import Menu from './Menu'
 import api from '../api';
 import './Thing.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
+import ReactLoading from 'react-loading';
 
 class Property extends Component {
     state = {
@@ -58,7 +58,7 @@ class Property extends Component {
                 return (
                     <React.Fragment>
                         <InputGroup size="sm">
-                            <FormInput onKeyDown={this.onKeyDown} type="string" placeholder="Value" innerRef={(ref) => this.initInput(ref)} />
+                            <FormInput onKeyDown={this.onKeyDown} type="text" placeholder="Value" innerRef={(ref) => this.initInput(ref)} />
                             <InputGroupAddon type="append">
                                 <Button size="sm" onClick={()=>this.setProp(this.inputRef.value)}>Set</Button>
                             </InputGroupAddon>
@@ -113,6 +113,9 @@ export default class Thing extends Component {
     state = {
         error: null,
         errorFatal: false,
+        loading: true,
+        editingName: false,
+        name: "..."
     }
     async componentDidMount() {
         var res = await api.fetch(`things/${this.props.match.params.uid}`)
@@ -120,11 +123,13 @@ export default class Thing extends Component {
             this.setState({error: "An error occurred while loading the thing: "+res.error, errorFatal: true})
         }
         this.thing = res.thing
+        this.setState({name: res.thing.name})
 
         if (api.admin()) {
             this.users = (await api.fetch(`things/${this.props.match.params.uid}/getUsers`)).users
         }
 
+        this.setState({loading: false})
         this.forceUpdate()
     }
     addUser = async () => {
@@ -151,11 +156,57 @@ export default class Thing extends Component {
         this.users = this.users.filter((u) => u.username != user.username)
         this.forceUpdate()
     }
+    editName = async () => {
+        if (!this.state.editingName) {
+            this.setState({name: this.thing.name})
+        }
+        this.setState({editingName: !this.state.editingName})
+    }
+    saveName = async () => {
+        this.setState({editingName: false})
+        var res = await api.fetch(`things/${this.thing.uid}/rename`, {
+            name: this.state.name
+        })
+        if (res.error) {
+            this.setState({error: res.error})
+        } else {
+            this.thing.name = this.state.name;
+            this.forceUpdate()
+        }
+    }
+    onRenameKeyDown = (e) => {
+        if (e.key === "Enter") {
+            this.saveName()
+        }
+    }
     render() {
+        if (this.state.loading) {
+            return (
+                <div className="thing">
+                    <Menu current="thing" />
+                    <div className="loading">
+                        <ReactLoading type={"spin"} color={"black"} />
+                    </div>
+                </div>
+            )
+        }
         return (
             <div className="thing">
                 <Menu current="thing" />
-                <h2>{this.thing?this.thing.name:"..."} <span>Thing</span></h2>
+                <h2>
+                    {this.state.editingName?(
+                            <InputGroup size="sm" className="editName">
+                              <FormInput onKeyDown={this.onRenameKeyDown} placeholder="Name" onChange={(e)=>this.setState({name: e.target.value})} value={(this.state.name)} />
+                              <InputGroupAddon type="append">
+                                <Button onClick={this.saveName} size="sm">Save</Button>
+                              </InputGroupAddon>
+                            </InputGroup>
+                    ):(
+                    this.thing?this.thing.name:"..."
+                    )}
+                    <span>Thing</span>
+                    {api.admin()?<Button onClick={this.editName} theme={this.state.editingName?"danger":"primary"} className="editBTN" outline pill><FontAwesomeIcon size="sm" icon={this.state.editingName?faTimes:faPen} /></Button>:null}
+                </h2>
                 <Container><Row><Col lg={{size: 8, offset: 2}}>
                     <Row>
                         <Col>
@@ -163,7 +214,7 @@ export default class Thing extends Component {
                         </Col>
                     </Row>
                     {this.thing?(
-                        Object.keys(this.thing.props).map((prop) => <Property thing={this.thing.uid} name={prop} value={this.thing.data[prop]} accepts={this.thing.props[prop]} />)
+                        Object.keys(this.thing.props).map((prop) => <Property key={prop} thing={this.thing.uid} name={prop} value={this.thing.data[prop]} accepts={this.thing.props[prop]} />)
                     ):null}
                     {api.admin()?(
                     <React.Fragment>
@@ -174,9 +225,9 @@ export default class Thing extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                <div class="userlist">
+                                <div className="userlist">
                                     {this.users?(
-                                        this.users.map((user) => <div class="user">{user.username}<FontAwesomeIcon onClick={()=>this.removeUser(user)} size="xs" icon={faTimes} /></div>)
+                                        this.users.map((user) => <div key={user.username} className="user">{user.username}<FontAwesomeIcon onClick={()=>this.removeUser(user)} size="xs" icon={faTimes} /></div>)
                                     ):null}
                                     <InputGroup size="sm" className="addthinguser">
                                         <FormInput onKeyDown={(e) => {

@@ -17,7 +17,7 @@ module.exports = function(db) {
             return
         }
         var {_id, hash, ...user} = user
-        res.send(user)
+        res.send({error: null, user})
     })
 
     auth.post("/login", async (req, res) => {
@@ -40,6 +40,28 @@ module.exports = function(db) {
         } else {
             res.status(401).send({error: "Incorrect password"})
         }
+    })
+
+    auth.post("/changePassword", checkAuth(), async (req, res) => {
+        if (req.body.username && req.body.username != req.tokenData.username && !req.tokenData.admin) {
+            res.status(401).send({error: "Only admins can do this"})
+            return
+        }
+        if (!req.body.password) {
+            res.status(400).send({error: "Need a password"})
+            return
+        }
+        var user = req.tokenData.username
+        if (req.body.username) {
+            user = req.body.username
+        }
+        var hash = await bcrypt.hash(req.body.password, 10)
+        var result = await db.collection("users").updateOne({username: user}, {$set: {hash}})
+        if (result.result.n == 0) {
+            res.status(400).send({error: "User doesn't exist"})
+            return
+        }
+        res.send({error: null})
     })
 
     auth.post("/listUsers", checkAuth(true), async (req, res) => {

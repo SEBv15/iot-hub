@@ -1,28 +1,17 @@
 import React, {Component} from 'react';
 import './Dashboard.scss'
-import { Link, useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestion, faLightbulb } from '@fortawesome/free-solid-svg-icons'
 import LongPress from 'react-long'
 import {
     BrowserView,
     MobileView,
-    isBrowser,
-    isMobile
   } from "react-device-detect";
 
 import Menu from './Menu'
 import api from '../api';
 
 import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardImg,
-    CardBody,
-    CardFooter,
-    Button,
-    CardGroup,
     Container,
     Row,
     Col
@@ -43,7 +32,7 @@ class Thing extends Component {
         iconColor: "#444",
     }
     componentDidMount() {
-        if (this.props.mainProp && this.props.props[this.props.mainProp] == "boolean") {
+        if (this.props.mainProp && this.props.props[this.props.mainProp] === "boolean") {
             this.setState({pressable: true})
             this.mainPropVal = this.props.data[this.props.mainProp] == "true"
             this.updateMainState(true)
@@ -95,7 +84,12 @@ class Thing extends Component {
                     <LongPress
                         time={500}
                         onLongPress={() => this.cardClick()}
-                        onPress={() => this.toggleBtn()}
+                        onPress={() => {
+                            if (this.state.pressable)
+                                this.toggleBtn()
+                            else
+                                this.cardClick()
+                        }}
                     >
                         <div className="thing card">
                             <div 
@@ -150,9 +144,10 @@ export default class Dashboard extends Component {
             <div className="dashboard">
                 <Menu current="dashboard" />
                 <h2>Dashboard</h2>
+                <span>Long press for more options</span>
                 <Container>
                     <Row>
-                        {this.state.things.map((thing) => <Thing history={this.props.history}  {...thing} />)}
+                        {this.state.things.map((thing) => <Thing key={thing.uid} history={this.props.history}  {...thing} />)}
                     </Row>
                 </Container>
             </div>

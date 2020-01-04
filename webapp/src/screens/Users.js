@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Link, useHistory } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader, Container, FormInput, Row, Col, Button, InputGroupAddon, InputGroup, InputGroupText } from "shards-react";
 import Menu from './Menu'
 import api from '../api';
@@ -28,7 +27,7 @@ export default class Users extends Component {
                 this.setState({error: result.error})
                 return
             }
-            this.users = this.users.filter((user) => user.username != username)
+            this.users = this.users.filter((user) => user.username !== username)
             this.forceUpdate()
         }
     }
@@ -62,14 +61,14 @@ export default class Users extends Component {
                 <Container>
                     <Row>
                         <Col lg={{size: 6, offset: 3}} md={{size: 8, offset: 2}} style={{marginBottom: 12}}>
-                            <form autocomplete="new-password" onSubmit={this.addUser}>
+                            <form autoComplete="new-password" onSubmit={this.addUser}>
                             <InputGroup>
-                                <FormInput onKeyDown={this.onKeyDown} type="text" placeholder="Username" autocomplete="new-password" innerRef={(ref) => {
+                                <FormInput onKeyDown={this.onKeyDown} type="text" placeholder="Username" autoComplete="new-password" innerRef={(ref) => {
                                     if (ref) {
                                         this.nameRef = ref
                                     }
                                 }} />
-                                <FormInput onKeyDown={this.onKeyDown} type="password" placeholder="Password" autocomplete="new-password" innerRef={(ref) => {
+                                <FormInput onKeyDown={this.onKeyDown} type="password" placeholder="Password" autoComplete="new-password" innerRef={(ref) => {
                                     if (ref) {
                                         this.pwdRef = ref
                                     }
