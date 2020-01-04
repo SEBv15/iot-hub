@@ -1,0 +1,23 @@
+div.dashboard {
+    div.thing {
+        width: 128px;
+        height: 128px;
+        margin-top: 32px;
+        margin: auto;
+        
+        div.btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 64px;
+            margin: 28px auto 0;
+
+            svg {
+                margin-top: 2px;
+            }
+
+            &.pressable {
+                border: 1px solid #eee;               
+            }
+        }
+    }
+}

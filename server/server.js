@@ -49,6 +49,7 @@ function start() {
 
     console.log("CONNECTED")
     app.use("/api/v1/", require("./api/api")(db, client))
+    app.use('/', webappProxy);
 
     client.on("message", function(topic, message) {
         message = message.toString()
@@ -68,7 +69,10 @@ function start() {
 
         var defaultConfig = {
             name: "Unnamed",
-            data: {}
+            data: {},
+            mainProp: "",
+            icon: null,
+            type: "mqtt"
         }
 
         console.log(Object.keys(config))
@@ -114,11 +118,14 @@ function start() {
 
 var express = require("express")
 var app = express()
+var proxy = require('http-proxy-middleware');
 
 var bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
+
+var webappProxy = proxy({ ws: true, target: 'http://localhost:3000' });
 
 app.listen(80)

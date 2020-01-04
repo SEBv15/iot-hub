@@ -5,6 +5,10 @@ module.exports = function(db, mqtt) {
     var router = express.Router()
 
     async function checkUserAccess(req, res, next) {
+        if (req.tokenData.admin) {
+            next()
+            return
+        }
         var user = await db.collection("users").findOne({username: req.tokenData.username})
         if (!user.things.includes(req.params.thing)) {
             res.status(401).send({error: "You are not allowed to access this thing"})
@@ -49,8 +53,13 @@ module.exports = function(db, mqtt) {
             res.status(400).send({error: "need username"})
             return
         }
-        await db.collection("users").updateOne({username: req.body.username}, {$addToSet: {things: req.params.thing}})
-        res.send({error: null})
+        var result = await db.collection("users").updateOne({username: req.body.username}, {$addToSet: {things: req.params.thing}})
+        // No matching username found
+        if (result.result.n == 0) {
+            res.status(400).send({error: "Username doesn't exist"})
+            return
+        }
+        res.send({error: null, alreadyAdded: result.result.nModified == 0})
     })
 
     router.post("/:thing/removeUser", checkAuth(true), checkThingExists, async (req, res) => {
@@ -92,7 +101,7 @@ module.exports = function(db, mqtt) {
             case "":
                 break
             case "number":
-                if (!isNaN(req.body.value)) {
+                if (isNaN(req.body.value)) {
                     res.status(400).send({error: "Invalid value"})
                     return
                 }
@@ -117,11 +126,11 @@ module.exports = function(db, mqtt) {
                 if (propRestriction.indexOf("-") >= 0) {
                     var lims = propRestriction.split("-")
                     console.log(lims)
-                    if (lims.length != 2) {
+                    if (lims.length != 2 || lims[0] === "" || lims[1] === "") {
                         res.status(500).send({error: "Malconfigured prop range restriction"})
                         return
                     }
-                    if ((req.body.value >= lims[0] || lims[0] === "") && (req.body.value <= lims[1] || lims[1] === "")) {
+                    if ((parseInt(req.body.value) >= lims[0]) && (parseInt(req.body.value) <= lims[1])) {
                         break
                     } else {
                         res.status(400).send({error: "Value outside acceptable range"})
@@ -138,6 +147,14 @@ module.exports = function(db, mqtt) {
         mqtt.publish(`iot/${req.params.thing}/recv`, `${req.body.prop}:${req.body.value}`, {qos: 2})
         await db.collection("things").updateOne({uid: req.params.thing}, {$set: update})
         res.send({error: null})
+    })
+
+    router.post("/:thing/getUsers", checkAuth(true), checkThingExists, async (req, res) => {
+        console.log({things: {$eq: req.params.thing}})
+        var users = await db.collection("users").find({things: {$all: [req.params.thing]}}).toArray()
+        console.log(users)
+        users = users.map(({_id, hash, ...users}) => users)
+        res.send({error: null, users})
     })
 
     return router

@@ -1,0 +1,16 @@
+div.users {
+    .user {
+        margin-top: 8px;
+    
+        span.input-group-text {
+            flex: 1;
+            color: black;
+            background-color: transparent;
+
+            &.regularuser {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+    }
+}

@@ -10,12 +10,22 @@ module.exports = function(db) {
 
     var auth = express.Router()
 
+    auth.post("/", checkAuth(), async(req, res) => {
+        var user = await db.collection("users").findOne({username: req.tokenData.username})
+        if (!user) {
+            res.status(400).send({error: "User doesn't exist"})
+            return
+        }
+        var {_id, hash, ...user} = user
+        res.send(user)
+    })
+
     auth.post("/login", async (req, res) => {
-        var name = req.body.username
+        var name = req.body.username.toLowerCase()
         var pass = req.body.password
         console.log(name, pass)
         if (!pass || !name) {
-            res.status(400).send({error: "username and password required"})
+            res.status(400).send({error: "Username and password required"})
             return
         }
         var user = await db.collection("users").findOne({username: name})
@@ -58,6 +68,24 @@ module.exports = function(db) {
             things: []
         })
         res.send({error: null, username: name})
+    })
+
+    auth.post("/deleteUser", checkAuth(true), async (req, res) => {
+        if (!req.body.username) {
+            res.status(400).send({error: "Need a username"})
+            return
+        }
+        var user = await db.collection("users").findOne({username: req.body.username})
+        if (!user) {
+            res.status(400).send({error: "User not found"})
+            return
+        }
+        if (user.admin) {
+            res.status(401).send({error: "Cannot delete admin"})
+            return
+        }
+        await db.collection("users").deleteOne({username: req.body.username})
+        res.send({error: null})
     })
 
     return auth

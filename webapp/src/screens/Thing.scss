@@ -1,0 +1,77 @@
+div.thing {
+    h2 span {
+        color: #999;
+    }
+    div.container h5 {
+        text-align: left;
+        margin-top: 24px;
+    }
+    div.prop {
+        margin: 12px 0;
+
+        span.propname {
+            text-align: right;
+            color: black;
+            font-size: 18px;
+            display: block;
+            font-weight: bolder;
+        }
+        div.input-group-sm .btn-sm {
+            padding: .15rem .75rem
+        }
+        div.slider-inp {
+            display: flex;
+            flex-direction: row;
+
+            span.slidermin, span.slidermax {
+                display: inline-block; 
+                font-size: 12px;
+                margin-top: 6px;
+            }
+            span.slidermin {
+                margin-right: 16px;
+            }
+            span.slidermax {
+                margin-left: 16px;
+            }
+
+            div.slider-success {
+                flex: 1;
+                margin: 14px 0;
+            }
+            button {
+                margin-left: 12px;
+            }
+        }
+        button.bool {
+            padding-left: 24px;
+            padding-right: 24px;
+            display: block;
+        }
+    }
+    div.userlist {
+        display: block;
+        text-align: left;
+
+        div.user {
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 2px 8px 4px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+
+            svg {
+                margin-left: 8px;
+            }
+        }
+        div.addthinguser {
+            width: 256px;
+            display: inline-flex;
+
+            .btn-sm {
+                padding: .15rem .75rem
+            }
+        }
+    }
+}
