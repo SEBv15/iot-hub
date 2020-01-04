@@ -26,8 +26,8 @@ export default class Login extends Component {
         if (res.error === null) {
             localStorage.setItem("token", res.token)
             var info = await api.fetch("auth")
-            localStorage.setItem("username", info.username)
-            localStorage.setItem("admin", info.admin)
+            localStorage.setItem("username", info.user.username)
+            localStorage.setItem("admin", info.user.admin)
             this.props.history.push("/dashboard")
         } else {
             this.setState({error: res.error})
