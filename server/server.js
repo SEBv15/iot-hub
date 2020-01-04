@@ -51,8 +51,8 @@ function start() {
     console.log("CONNECTED")
     app.use("/api/v1/", require("./api/api")(db, client))
     if (process.env.ENV != "development") {
-        app.use(express.static(path.join(__dirname, '../webapp/build')))
-        app.use("*", express.static(path.join(__dirname, '../webapp/build/index.html')))
+        app.use(express.static(path.join(__dirname, 'build')))
+        app.use("*", express.static(path.join(__dirname, 'build/index.html')))
     } else {
         app.use('/', webappProxy);
     }
