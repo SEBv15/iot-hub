@@ -1,4 +1,5 @@
 require('dotenv').config()
+var path = require("path")
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
@@ -49,7 +50,13 @@ function start() {
 
     console.log("CONNECTED")
     app.use("/api/v1/", require("./api/api")(db, client))
-    app.use('/', webappProxy);
+    if (process.env.ENV == "production") {
+        app.use(express.static(path.join(__dirname, '../webapp/build')))
+        app.use("*", express.static(path.join(__dirname, '../webapp/build/index.html')))
+    } else {
+        app.use('/', webappProxy);
+    }
+
 
     client.on("message", function(topic, message) {
         message = message.toString()

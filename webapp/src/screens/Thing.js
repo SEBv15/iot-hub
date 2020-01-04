@@ -121,6 +121,7 @@ export default class Thing extends Component {
         var res = await api.fetch(`things/${this.props.match.params.uid}`)
         if (res.error !== null) {
             this.setState({error: "An error occurred while loading the thing: "+res.error, errorFatal: true})
+            return
         }
         this.thing = res.thing
         this.setState({name: res.thing.name})

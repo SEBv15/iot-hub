@@ -7,14 +7,14 @@
  * @return {Object} The data
  */
 async function request(endpoint, data = {}) {
-    var data = await fetch(`/api/v1/${endpoint}`, {
+    var res = await fetch(`/api/v1/${endpoint}`, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({token: localStorage.getItem("token"), ...data})
     })
-    return await data.json()
+    return await res.json()
 }
 
 function admin() {
