@@ -105,7 +105,35 @@ function start() {
 
         console.log("SENDING")
         client.subscribe(`iot/${config.uid}/send`)
-        client.publish("iot/config", config.uid, {qos: 2})
+        //client.publish("iot/config", config.uid, {qos: 2})
+        for (var prop of Object.keys(config.props)) {
+            console.log(prop)
+            if (res.data[prop] === undefined) {
+                switch(config.props[prop]) {
+                    case "number":
+                        res.data[prop] = "0"
+                        break
+                    case "":
+                    case "string":
+                        res.data[prop] = ""
+                        break
+                    case "boolean":
+                        res.data[prop] = "false"
+                        break
+                    default:
+                        var m = config.props[prop].split("-")
+                        if (m.length == 2)
+                            res.data[prop] = m[0]
+                        else
+                            res.data[prop] = ""
+
+                }
+                db.collection("things").updateOne({uid: config.uid}, {
+                    $set: {data: res.data}
+                })
+            }
+            client.publish("iot/config", `${prop}:${res.data[prop]}`)
+        }
         console.log(config)
     }
 
