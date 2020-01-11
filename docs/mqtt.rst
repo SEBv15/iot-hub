@@ -8,5 +8,10 @@ Topics
 ======
 
 ``iot/hello``
-  All things need to annouce themselves and give information about themselves:
-  :Name The name of the thing
+    All things need to annouce themselves and give information about themselves:
+
+    +----------+-----------------------------+
+    | ``uid``  | The unique ID for the thing |
+    +----------+-----------------------------+
+    | ``name`` | The name of the thing       |
+    +----------+-----------------------------+
