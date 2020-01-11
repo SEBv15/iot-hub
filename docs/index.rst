@@ -8,7 +8,7 @@ Welcome to Strempfer IoT's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
    intro
 
