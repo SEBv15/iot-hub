@@ -21,7 +21,7 @@ module.exports = function(db) {
     })
 
     auth.post("/login", async (req, res) => {
-        var name = req.body.username.toLowerCase()
+        var name = req.body.username.trim().toLowerCase()
         var pass = req.body.password
         if (!pass || !name) {
             res.status(400).send({error: "Username and password required"})
@@ -52,7 +52,7 @@ module.exports = function(db) {
         }
         var user = req.tokenData.username
         if (req.body.username) {
-            user = req.body.username
+            user = req.body.username.trim().toLowerCase()
         }
         var hash = await bcrypt.hash(req.body.password, 10)
         var result = await db.collection("users").updateOne({username: user}, {$set: {hash}})
@@ -70,7 +70,7 @@ module.exports = function(db) {
     })
 
     auth.post("/addUser", checkAuth(true), async (req, res) => {
-        var name = req.body.username.toLowerCase()
+        var name = req.body.username.trim().toLowerCase()
         var pass = req.body.password
         if (!pass || !name) {
             res.status(400).send({error: "username and password required"})

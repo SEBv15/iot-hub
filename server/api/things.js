@@ -53,6 +53,7 @@ module.exports = function(db, mqtt) {
             res.status(400).send({error: "need username"})
             return
         }
+        req.body.username = req.body.username.trim().toLowerCase();
         var result = await db.collection("users").updateOne({username: req.body.username}, {$addToSet: {things: req.params.thing}})
         // No matching username found
         if (result.result.n == 0) {
