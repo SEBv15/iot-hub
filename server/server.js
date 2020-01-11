@@ -44,7 +44,7 @@ client.subscribe("iot/hello")
 // Events to be sent to the server
 client.subscribe("iot/events")
 
-function start() {
+async function start() {
     if (!connected.mongodb || !connected.mqtt)
         return
 
@@ -57,6 +57,11 @@ function start() {
         app.use('/', webappProxy);
     }
 
+    // subscribe to all devices
+    var things = await db.collection("things").find().toArray()
+    for (thing of things) {
+        client.subscribe("iot/"+thing.uid+"/send")
+    }
 
     client.on("message", function(topic, message) {
         message = message.toString()
@@ -70,7 +75,7 @@ function start() {
         try {
             config = JSON.parse(config)
         } catch(err) {
-            client.publish("iot/config", "err: Invalid JSON")
+            client.publish("iot/config", "err: Invalid JSON", {qos: 2})
             return
         }
 
@@ -87,7 +92,7 @@ function start() {
         var keys = Object.keys(config)
 
         if (!config["uid"] || !config["props"] || !(config.props.constructor == Object)) {
-            client.publish("iot/config", "err: Not all fields supplied")
+            client.publish("iot/config", "err: Not all fields supplied", {qos: 2})
             return
         }
 
@@ -99,7 +104,11 @@ function start() {
             await db.collection("things").insertOne(config)
         } else {
             await db.collection("things").updateOne({uid: config.uid}, {
-                $set: {props: config.props}
+                $set: {
+                    props: config.props, 
+                    mainProp: config.mainProp,
+                    icon: config.icon
+                }
             })
         }
 
@@ -132,16 +141,16 @@ function start() {
                     $set: {data: res.data}
                 })
             }
-            client.publish("iot/config", `${prop}:${res.data[prop]}`)
+            client.publish(`iot/${config.uid}/config`, `${prop}:${res.data[prop]}`, {qos: 2})
         }
         console.log(config)
     }
 
     async function onData(uid, message) {
         var [prop, value] = message.split(":", 2)
-        console.log("RECEIVED", prop, value)
         var doc = await db.collection("things").findOne({uid})
-        if (!(prop in Object.keys(doc.props)))
+        console.log("RECEIVED", uid, prop, value)
+        if (!Object.keys(doc.props).includes(prop))
             return
         var update = {}
         update["data."+prop] = value
