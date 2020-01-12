@@ -12,4 +12,5 @@ Welcome to Strempfer IoT's documentation!
    :caption: Contents
 
    intro
+   api
    mqtt

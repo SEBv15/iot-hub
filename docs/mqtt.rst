@@ -2,7 +2,7 @@
 MQTT
 ====
 
-Communcation with things happens over MQTT. 
+Communcation with things happens over MQTT. This program basically hogs onto an existing MQTT server.
 
 Topics
 ======
