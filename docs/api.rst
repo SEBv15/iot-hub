@@ -32,7 +32,7 @@ takes a ``token`` parameter and returns all info about the current user.
 +=======+=====================+======================+
 | error | ``null``/``string`` | Description of error |
 +-------+---------------------+----------------------+
-| user  | ``object``          | The user data:       |
+| user  | ``object``          | | The user data:     |
 |       |                     | | ``username``       |
 |       |                     | | ``things``         |
 |       |                     | | ``admin``          |
