@@ -58,7 +58,7 @@ Response
 
 POST ``auth/changePassword``
 ----------------------------
-Change your account's password
+Change your account's password.
 
 Parameters
     +-----------+------------------------------------------+
@@ -79,7 +79,7 @@ Response
 
 POST ``auth/addUser`` (admin only)
 ----------------------------------
-Add a user to the database
+Add a user to the database.
 
 Parameters
     +-----------+------------------------------------------+
@@ -88,6 +88,25 @@ Parameters
     | token     | Your admin auth token                    |
     +-----------+------------------------------------------+
     | password  | The new password                         |
+    +-----------+------------------------------------------+
+    | username  | Username of the account                  |
+    +-----------+------------------------------------------+
+Response
+    +-------+---------------------+----------------------+
+    | Name  | Data                | Description          |
+    +=======+=====================+======================+
+    | error | ``null``/``string`` | Description of error |
+    +-------+---------------------+----------------------+
+
+POST ``auth/deleteUser`` (admin only)
+-------------------------------------
+Delete a user from the database.
+
+Parameters
+    +-----------+------------------------------------------+
+    | Name      | Description                              |
+    +===========+==========================================+
+    | token     | Your admin auth token                    |
     +-----------+------------------------------------------+
     | username  | Username of the account                  |
     +-----------+------------------------------------------+
