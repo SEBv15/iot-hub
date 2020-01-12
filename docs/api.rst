@@ -22,3 +22,19 @@ This takes ``username`` and ``password`` and will return
 +-------+---------------------+----------------------+
 | token | ``string``          | the auth token       |
 +-------+---------------------+----------------------+
+
+POST ``auth``
+-------------
+takes a ``token`` parameter and returns all info about the current user.
+
++-------+---------------------+----------------------+
+| Name  | Type                | Description          |
++=======+=====================+======================+
+| error | ``null``/``string`` | Description of error |
++-------+---------------------+----------------------+
+| user  | ``object``          | The user data:       |
+|       |                     | | ``username``       |
+|       |                     | | ``things``         |
+|       |                     | | ``admin``          |
+|       |                     | | ``createdBy``      |
++-------+---------------------+----------------------+
