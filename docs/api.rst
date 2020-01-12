@@ -13,7 +13,7 @@ Authentication
 
 POST ``auth/login``
 -------------------
-This takes ``username`` and ``password`` and will return
+Login or rather acquire an auth token.
 
 Parameters
     +-----------+------------------------------------------+
@@ -35,7 +35,7 @@ Returns
 
 POST ``auth``
 -------------
-takes a ``token`` parameter and returns all info about the current user.
+Get info about the current user.
 
 Parameters
     +-----------+------------------------------------------+
