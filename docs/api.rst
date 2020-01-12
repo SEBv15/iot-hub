@@ -96,7 +96,7 @@ Response
     | error | ``null``/``string`` | Description of error |
     +-------+---------------------+----------------------+
     | users | ``object array``    | Users (same fields   |
-    |       |                     | as ``auth``_)         |
+    |       |                     | as ``auth``_)        |
     +-------+---------------------+----------------------+
 
 POST ``auth/addUser`` *(admin only)*
