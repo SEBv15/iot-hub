@@ -15,12 +15,10 @@ POST ``auth/login``
 -------------------
 This takes ``username`` and ``password`` and will return
 
-======= ======== ===========
-Name    Type     Description
-------- -------- -----------
-error   ``null`` None
-======= ======== ===========
-
-| Name | Type | Description |
-| --- | --- | --- |
-| error | ``null`` | None |
++-------+---------------------+----------------------+
+| Name  | Type                | Description          |
++=======+=====================+======================+
+| error | ``null``/``string`` | Description of error |
++-------+---------------------+----------------------+
+| token | ``string``          | the auth token       |
++-------+---------------------+----------------------+
