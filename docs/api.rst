@@ -8,6 +8,8 @@ All subsequent endpoints exist at ``/api/v1/[endpoint]`` and are all POST reques
 
 A token is needed for everything but ``auth/login`` and should be supplied as POST body ``token`` parameter.
 
+All responses are a JSON object.
+
 Authentication
 ==============
 
