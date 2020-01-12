@@ -218,6 +218,27 @@ Response
 
 POST ``things/[thing uid]/getUsers`` *(admin only)*
 ---------------------------------------------------
+List the people that have access to this thing.
+
+Parameters
+    +-----------+------------------------------------------+
+    | Name      | Description                              |
+    +===========+==========================================+
+    | token     | Your admin auth token                    |
+    +-----------+------------------------------------------+
+
+Response
+    +--------------+----------------------------+----------------------+
+    | Name         | Data                       | Description          |
+    +==============+============================+======================+
+    | error        | ``null``/``string``        | Description of error |
+    +--------------+----------------------------+----------------------+
+    | users        | ``object array``           | Users (same fields   |
+    |              |                            | as auth_)            |
+    +--------------+----------------------------+----------------------+
+    
+POST ``things/[thing uid]/addUser`` *(admin only)*
+---------------------------------------------------
 Allow a user to use the thing.
 
 Parameters
