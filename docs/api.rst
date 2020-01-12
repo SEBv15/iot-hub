@@ -77,7 +77,7 @@ Response
     | error | ``null``/``string`` | Description of error |
     +-------+---------------------+----------------------+
 
-POST ``auth/addUser`` (admin only)
+POST ``auth/addUser`` *(admin only)*
 ----------------------------------
 Add a user to the database.
 
@@ -98,7 +98,7 @@ Response
     | error | ``null``/``string`` | Description of error |
     +-------+---------------------+----------------------+
 
-POST ``auth/deleteUser`` (admin only)
+POST ``auth/deleteUser`` *(admin only)*
 -------------------------------------
 Delete a user from the database.
 
