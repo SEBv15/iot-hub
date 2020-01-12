@@ -1,6 +1,8 @@
 # iot-hub
 
 I didn't like mozilla gateway so I made my own
+
+[Documentation](https://strempfer-iot.readthedocs.io/)
  
 ## Setup
 Create `.env` file in the `/server` directory with the following value
