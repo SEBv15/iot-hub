@@ -16,7 +16,7 @@ POST ``auth/login``
 This takes ``username`` and ``password`` and will return
 
 +-------+---------------------+----------------------+
-| Name  | Type                | Description          |
+| Name  | Data                | Description          |
 +=======+=====================+======================+
 | error | ``null``/``string`` | Description of error |
 +-------+---------------------+----------------------+
@@ -28,7 +28,7 @@ POST ``auth``
 takes a ``token`` parameter and returns all info about the current user.
 
 +-------+-----------------------------+----------------------+
-| Name  | Type                        | Description          |
+| Name  | Data                        | Description          |
 +=======+=============================+======================+
 | error | ``null``/``string``         | Description of error |
 +-------+-----------+-----------------+----------------------+
@@ -37,3 +37,24 @@ takes a ``token`` parameter and returns all info about the current user.
 |       |           | | ``things``    |                      |
 |       |           | | ``createdBy`` |                      |
 +-------+-----------+-----------------+----------------------+
+
+POST ``auth/changePassword``
+----------------------------
+Change your account's password
+
+Parameters
+    +-----------+------------------------------------------+
+    | Name      | Description                              |
+    +===========+==========================================+
+    | token     | The auth token                           |
+    +-----------+------------------------------------------+
+    | password  | The new password                         |
+    +-----------+------------------------------------------+
+    | username  | Username of the account (admin only)     |
+    +-----------+------------------------------------------+
+Returns
+    +-------+---------------------+----------------------+
+    | Name  | Data                | Description          |
+    +=======+=====================+======================+
+    | error | ``null``/``string`` | Description of error |
+    +-------+---------------------+----------------------+
