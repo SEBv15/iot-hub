@@ -36,10 +36,20 @@ Some configuration can be made by adding a ``.env`` file to the ``server/`` fold
 Building WebApp
 ---------------
 
-To build the react app, run ``npm run build`` inside the ``/webapp`` folder and then copy the ``build`` folder to ``/server``.
+To build the react app, run
+
+.. code-block:: bash
+
+    cd webapp
+    npm run build
+    cp -r build ../server/
 
 Dockerizing
 -----------
+
+This will build a docker container and publish it to my local docker registry.
+
+Be sure to increase the version number before executing the command.
 
 .. code-block:: bash
 
