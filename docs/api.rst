@@ -33,6 +33,8 @@ Response
     | token | ``string``          | the auth token       |
     +-------+---------------------+----------------------+
 
+.. _auth:
+
 POST ``auth``
 -------------
 Get info about the current user.
@@ -96,7 +98,7 @@ Response
     | error | ``null``/``string`` | Description of error |
     +-------+---------------------+----------------------+
     | users | ``object array``    | Users (same fields   |
-    |       |                     | as ``auth``_)        |
+    |       |                     | as auth_)            |
     +-------+---------------------+----------------------+
 
 POST ``auth/addUser`` *(admin only)*
