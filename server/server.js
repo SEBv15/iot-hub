@@ -16,33 +16,44 @@ const url = 'mongodb://192.168.1.101:27017';
 const dbName = 'iot-hub';
 
 var db;
- 
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
- 
-  db = client.db(dbName);
+var client;
 
-  connected.mongodb = true
-  start()
-});
+async function connect() {
+    // if in production
+    if (process.env.ENV != "development") {
+        // wait 10 seconds before starting so MQTT and MongoDB can start up first
+        await new Promise(r => setTimeout(r, 10000))
+    }
 
-var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://192.168.1.101', {
-    username: process.env.MQTT_USERNAME,
-    password: process.env.MQTT_PASSWORD
-})
+    // Use connect method to connect to the server
+    MongoClient.connect(url, function(err, client) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        
+        db = client.db(dbName);
 
-client.on("connect", function() {
-    connected.mqtt = true
-    start()
-})
+        connected.mongodb = true
+        start()
+    });
 
-// Clients say hi
-client.subscribe("iot/hello")
-// Events to be sent to the server
-client.subscribe("iot/events")
+    var mqtt = require('mqtt')
+    client  = mqtt.connect('mqtt://192.168.1.101', {
+        username: process.env.MQTT_USERNAME,
+        password: process.env.MQTT_PASSWORD
+    })
+
+    client.on("connect", function() {
+        connected.mqtt = true
+        start()
+    })
+
+    // Clients say hi
+    client.subscribe("iot/hello")
+    // Events to be sent to the server
+    client.subscribe("iot/events")
+}
+
+connect()
 
 async function start() {
     if (!connected.mongodb || !connected.mqtt)

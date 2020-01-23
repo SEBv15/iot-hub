@@ -68,6 +68,14 @@ class Menu extends Component {
                                     Users
                                 </NavLink>
                             </NavItem>):null}
+                            <NavItem active={this.props.current === "macros"}>
+                                <NavLink 
+                                    active={this.props.current === "macros"}
+                                    href="" 
+                                    onClick={this.linkClick("/macros")}>
+                                    Macros
+                                </NavLink>
+                            </NavItem>
                         </Nav>
 
                         <Nav navbar className="ml-auto">

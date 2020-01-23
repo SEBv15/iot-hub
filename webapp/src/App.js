@@ -7,6 +7,7 @@ import Dashboard from './screens/Dashboard'
 import Account from './screens/Account'
 import Users from './screens/Users'
 import Thing from './screens/Thing';
+import Macros from './screens/Macros'
 
 class Load extends Component {
   state = {loading: true, redirectTo: ""}
@@ -40,6 +41,7 @@ function App() {
           <Route path="/account" component={Account} />
           <Route path="/users" component={Users} />
           <Route path="/thing/:uid" component={Thing} />
+          <Route path="/macros" component={Macros} />
         </div>
       </Router>
     </div>
